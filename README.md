@@ -1,19 +1,18 @@
-# weakrest
- A simple RESTful client for Activiti REST API
- {Sample Text}
- Use with your own risks!
+# weakrest client
+## A simple RESTful client for Activiti REST API
   
- This utility is based on only Apache Http Client and Jackson Json libraries included in BXM.
- 
- @author Nemo Hunjae Lee
+ This utility is based on only Apache Http Client and Jackson Json libraries
  
  Usuage example:
+```
+// For GET
  WeakRestClient.RestRespone respone = WeakRestClient.get(<URL>) // also delete for DELETE method
                                           .setConnectionTimeout(10000) // millis
                                           .setSocketTimeout(10000) // millis
                                           .basicAuth("auth user id", "auth password")
                                           .queryString("paramName", "paramValue")
                                           .execute();
+// For POST
 WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for PUT method
                                          .setConnectionTimeout(10000) // millis
                                           .setSocketTimeout(10000) // millis
@@ -21,6 +20,7 @@ WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for 
                                           .basicAuth("auth user id", "auth password")
                                           .bodyAsJsonNode(< a JsonNode object>) // or .body(String)
                                           .execute();
+```
  response.statueCode => HTTP STATUS CODE
  response.responseBody => String
  response.asJsonNode() => return JsonNode object of the body string
