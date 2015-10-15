@@ -2,7 +2,6 @@
 ## A simple RESTful client with minimum dependencies
   
 This utility is based on Apache Http Client and Jackson Json libraries, but older versions of those, intentionally. 
-Thus if you need, change dependencies section of the build.gradle file for newer versions.
 
 ### Usuage example:
 #### For GET
