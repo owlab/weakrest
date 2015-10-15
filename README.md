@@ -1,7 +1,7 @@
 # weakrest client
-## A simple RESTful client for Activiti REST API
+## A simple RESTful client with minimum dependencies
   
- This utility is based on only Apache Http Client and Jackson Json libraries
+This utility is based on Apache Http Client and Jackson Json libraries.
  
 ### Usuage example:
 #### For GET
