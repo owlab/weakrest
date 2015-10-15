@@ -16,11 +16,11 @@ This utility is based on Apache Http Client and Jackson Json libraries.
 #### For POST
 ```
 WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for PUT method
-                                         .setConnectionTimeout(10000) // millis
+                                          .setConnectionTimeout(10000) // millis
                                           .setSocketTimeout(10000) // millis
                                           .header("content-type", "application/json")
                                           .basicAuth("auth user id", "auth password")
-                                          .bodyAsJsonNode(< a JsonNode object>) // or .body(String)
+                                          .bodyAsJsonNode(<a JsonNode object>) // or .body(String)
                                           .execute();
 ```
 #### Use of Response
