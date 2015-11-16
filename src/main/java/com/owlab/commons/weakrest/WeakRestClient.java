@@ -37,8 +37,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * A simple RESTful client for Activiti REST API
- * {Sample Text}
+ * A simple RESTful client for Activiti REST API (https://github.com/owlab/weakrestclient)
+ * 
  * Use with your own risks!
  *  
  * This utility is based on only Apache Http Client and Jackson Json libraries included in BXM.
