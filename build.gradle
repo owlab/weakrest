@@ -1,7 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
-group = 'com.owlab.commons'
-version = "1.0"
+group = 'com.owlab'
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenLocal()
@@ -26,3 +27,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+                authentication(userName: nexusUsername, password: nexusPassword)
+            }
+            pom.artifactId = project.name
+            pom.groupId = project.group
+            pom.version  = project.version
+        }
+    }
+}
