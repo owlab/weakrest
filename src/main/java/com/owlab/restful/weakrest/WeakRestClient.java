@@ -1,4 +1,4 @@
-package com.owlab.commons.weakrest;
+package com.owlab.restful.weakrest;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,8 +37,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * A simple RESTful client for Activiti REST API
- * {Sample Text}
+ * A simple RESTful client for Activiti REST API (https://github.com/owlab/weakrestclient)
+ * 
  * Use with your own risks!
  *  
  * This utility is based on only Apache Http Client and Jackson Json libraries included in BXM.
@@ -46,24 +46,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Nemo Hunjae Lee
  * 
  * Usuage example:
- * WeakRestClient.RestRespone respone = WeakRestClient.get(<URL>) // also delete for DELETE method
+ * WeakRestClient.RestRespone respone = WeakRestClient.get([URL]) // also delete for DELETE method
  *                                          .setConnectionTimeout(10000) // millis
  *                                          .setSocketTimeout(10000) // millis
  *                                          .basicAuth("auth user id", "auth password")
  *                                          .queryString("paramName", "paramValue")
  *                                          .execute();
-  * WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for PUT method
+  * WeakRestClient.RestRespone respone = WeakRestClient.post([URL]) // also put for PUT method
   *                                         .setConnectionTimeout(10000) // millis
  *                                          .setSocketTimeout(10000) // millis
  *                                          .header("content-type", "application/json")
  *                                          .basicAuth("auth user id", "auth password")
- *                                          .bodyAsJsonNode(< a JsonNode object>) // or .body(String)
+ *                                          .bodyAsJsonNode([ a JsonNode object]) // or .body(String)
  *                                          .execute();
- * response.statueCode => HTTP STATUS CODE
- * response.responseBody => String
- * response.asJsonNode() => return JsonNode object of the body string
+ * response.statueCode  : HTTP STATUS CODE
+ * response.responseBody: String
+ * response.asJsonNode(): return JsonNode object of the body string
  *
  */
+
 public class WeakRestClient {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
     
