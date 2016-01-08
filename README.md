@@ -27,3 +27,6 @@ WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for 
 * response.statueCode => HTTP STATUS CODE
 * response.responseBody => String
 * response.asJsonNode() => return JsonNode object of the body string
+
+## To build from source
+`gradle build -x uploadArchives -PnexusUsername=dummy -PnexusPassword=dummy`
