@@ -1,6 +1,8 @@
 package com.owlab.restful.weakrest;
 
 import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -187,10 +190,7 @@ public class WeakRestClient {
         return this;
     }
     
-    
-    
-    
-    public RestResponse execute() throws URISyntaxException, ClientProtocolException, IOException {
+    private void makeRequest() throws URISyntaxException {
         String currentUrl = null;
         if(this.requestType == RequestType.NON_ENTITY_ENCLOSING) {
             if(this.queryParameters.size() > 0) {
@@ -205,24 +205,74 @@ public class WeakRestClient {
             currentUrl = this.httpEntityEnclosingRequestBase.getURI().toString();
         } else  {
         }
+        logger.debug("Calling with URL: " + currentUrl);
+    }
+
+    public RestResponse execute() throws URISyntaxException, ClientProtocolException, IOException {
+        makeRequest();
         RestResponse restResponse = null;
-        logger.debug("Calling Acitviti with URL: " + currentUrl);
         try {
             HttpResponse httpResponse = null;
             if(this.requestType == RequestType.NON_ENTITY_ENCLOSING)
                 httpResponse = this.httpClient.execute(this.httpRequestBase);
             if(this.requestType == RequestType.ENTITY_ENCLOSING)
                 httpResponse = this.httpClient.execute(this.httpEntityEnclosingRequestBase);
+
             restResponse = new RestResponse(httpResponse.getStatusLine().getStatusCode(), EntityUtils.toString(
                     httpResponse.getEntity(), "UTF-8"));
             
         } finally {
             httpClient.getConnectionManager().shutdown();
         }
-        logger.debug("Response code from Activiti: " + restResponse.statusCode);
+        logger.debug("Response code from: " + restResponse.statusCode);
         return restResponse;
     }
-    
+
+    public void execute(StreamReader streamReader) throws URISyntaxException, ClientProtocolException, IOException {
+        makeRequest();
+        try {
+            HttpResponse httpResponse = null;
+            if(this.requestType == RequestType.NON_ENTITY_ENCLOSING)
+                httpResponse = this.httpClient.execute(this.httpRequestBase);
+            if(this.requestType == RequestType.ENTITY_ENCLOSING)
+                httpResponse = this.httpClient.execute(this.httpEntityEnclosingRequestBase);
+            System.out.println("----------------------------------------");
+            System.out.println(httpResponse.getStatusLine());
+            System.out.println("----------------------------------------");
+            HttpEntity entity = httpResponse.getEntity();
+
+            byte[] buffer = new byte[1024];
+            if(entity != null) {
+                InputStream inputStream = entity.getContent();
+                try {
+                    int bytesRead = 0;
+                    BufferedInputStream bis = new BufferedInputStream(inputStream);
+                    while((bytesRead = bis.read(buffer)) != -1) {
+                        streamReader.read(buffer, 0, bytesRead);
+                    }
+                } catch (IOException ioe) {
+                    //IOException will release the connection manager, automatically?
+                    ioe.printStackTrace();
+                } catch (RuntimeException re) {
+                    //Abort will shutdown the underlying connection immediatly
+                    if(this.requestType == RequestType.NON_ENTITY_ENCLOSING)
+                        this.httpRequestBase.abort();
+                    if(this.requestType == RequestType.ENTITY_ENCLOSING)
+                        this.httpEntityEnclosingRequestBase.abort();
+                    re.printStackTrace();
+                } finally {
+                    try {
+                        inputStream.close();
+                    } catch(Exception e) {
+                        //ignore
+                    }
+                }
+            }
+        } finally {
+            httpClient.getConnectionManager().shutdown();
+        }
+    }
+
     public WeakRestClient bodyAsJsonNode(JsonNode jsonNode) throws UnsupportedEncodingException, JsonProcessingException {
         if(this.requestType == RequestType.ENTITY_ENCLOSING) {
             final ObjectMapper mapper = new ObjectMapper();
