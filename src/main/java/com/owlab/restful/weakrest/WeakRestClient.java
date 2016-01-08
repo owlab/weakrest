@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * A simple RESTful client for Activiti REST API (https://github.com/owlab/weakrestclient)
+ * A simple RESTful client REST APIs (https://github.com/owlab/weakrestclient)
  * 
  * Use with your own risks!
  *  
