@@ -1,9 +1,11 @@
 // For publishing to maven central
 apply plugin: 'maven'
+apply plugin: 'signing'
 //For just this project
 apply plugin: 'java'
 
 group = 'com.owlab'
+archivesBaseName="weakrestclient"
 version = "1.0.0"
 
 repositories {
@@ -25,15 +27,57 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+// Below is all for publishing
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
-                authentication(userName: nexusUsername, password: nexusPassword)
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            //If the version ends with "-SNAPSHOT"
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
             }
             pom.artifactId = project.name
             pom.groupId = project.group
             pom.version  = project.version
+            pom.project {
+                name 'WeakRestClient'
+                packaging 'jar'
+                description 'A simple RESTful client based on the old Apache HTTP Client v4.1.1'
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name 'HunJae Lee'
+                        email 'hunjae.lee@gmail.com'
+                    }
+                }
+            }
         }
     }
 }
