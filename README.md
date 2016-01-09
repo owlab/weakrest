@@ -30,8 +30,8 @@ WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for 
 
 #### For GET (chunked stream)
 ```
- WeakRestClient.get(<URL>) // also delete for DELETE method
-               .execute(line -> {});
+ WeakRestClient.get(<URL>)
+               .execute(line -> { <some codes> });
 ```
 ## To build from source
 ### Build
