@@ -4,7 +4,7 @@
 This utility is based on Apache Http Client and Jackson Json libraries, but older versions of those, intentionally. 
 
 ### Usuage example:
-#### For GET
+#### For GET (one time shot)
 ```
  WeakRestClient.RestRespone respone = WeakRestClient.get(<URL>) // also delete for DELETE method
                                           .setConnectionTimeout(10000) // millis
@@ -13,7 +13,7 @@ This utility is based on Apache Http Client and Jackson Json libraries, but olde
                                           .queryString("paramName", "paramValue")
                                           .execute();
 ```
-#### For POST
+#### For POST (one time shot)
 ```
 WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for PUT method
                                           .setConnectionTimeout(10000) // millis
@@ -28,5 +28,10 @@ WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for 
 * response.responseBody => String
 * response.asJsonNode() => return JsonNode object of the body string
 
+#### For GET (chunked stream)
+```
+ WeakRestClient.get(<URL>) // also delete for DELETE method
+               .execute(line -> {});
+```
 ## To build from source
-`gradle build -x uploadArchives -PnexusUsername=dummy -PnexusPassword=dummy`
+```gradle build -PossrhUsername=dummy -PossrhPassword=dummy```

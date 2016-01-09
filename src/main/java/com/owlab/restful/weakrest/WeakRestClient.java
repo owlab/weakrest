@@ -1,7 +1,8 @@
 package com.owlab.restful.weakrest;
 
 import java.io.IOException;
-import java.io.BufferedInputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -246,9 +247,11 @@ public class WeakRestClient {
                 InputStream inputStream = entity.getContent();
                 try {
                     int bytesRead = 0;
-                    BufferedInputStream bis = new BufferedInputStream(inputStream);
-                    while((bytesRead = bis.read(buffer)) != -1) {
-                        streamReader.read(buffer, 0, bytesRead);
+                    InputStreamReader isr = new InputStreamReader(inputStream);
+                    BufferedReader br = new BufferedReader(isr);
+                    String line = null;
+                    while((line = br.readLine()) != null) {
+                        streamReader.read(line);
                     }
                 } catch (IOException ioe) {
                     //IOException will release the connection manager, automatically?
