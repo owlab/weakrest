@@ -34,4 +34,7 @@ WeakRestClient.RestRespone respone = WeakRestClient.post(<URL>) // also put for 
                .execute(line -> {});
 ```
 ## To build from source
+### Build
+```gradle build -PossrhUsername=dummy -PossrhPassword=dummy```
+### Install into the local maven repository
 ```gradle build -PossrhUsername=dummy -PossrhPassword=dummy```
